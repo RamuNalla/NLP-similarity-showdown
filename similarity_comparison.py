@@ -116,6 +116,45 @@ class SimilarityAnalyzer:
                 return "Related"
         
         return "Unrelated"
+
+    def create_similarity_heatmaps(self):             # visualize similarity matrices using heatmaps
+        
+        tfidf_sim = self.get_tfidf_similarity(self.sample_sentences)
+        transformer_sim = self.get_transformer_similarity(self.sample_sentences)
+        
+        fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+        
+        sns.heatmap(tfidf_sim, annot=True, fmt='.3f', cmap='Blues',         # TF-IDF heatmap
+                    xticklabels=range(len(self.sample_sentences)),
+                    yticklabels=range(len(self.sample_sentences)),
+                    ax=axes[0])
+        axes[0].set_title('TF-IDF Cosine Similarity Matrix', fontsize=14, fontweight='bold')
+        axes[0].set_xlabel('Sentence Index')
+        axes[0].set_ylabel('Sentence Index')
+        
+        sns.heatmap(transformer_sim, annot=True, fmt='.3f', cmap='Reds',        # Transformer heatmap
+                    xticklabels=range(len(self.sample_sentences)),
+                    yticklabels=range(len(self.sample_sentences)),
+                    ax=axes[1])
+        axes[1].set_title('Transformer Cosine Similarity Matrix', fontsize=14, fontweight='bold')
+        axes[1].set_xlabel('Sentence Index')
+        axes[1].set_ylabel('Sentence Index')
+        
+        plt.tight_layout()
+        plt.savefig('similarity_matrices_comparison.png', dpi=300, bbox_inches='tight')
+        plt.show()
+        
+        return tfidf_sim, transformer_sim
     
+
+    def compare_methods_detailed(self) -> pd.DataFrame:     # detailed comparison of methods on sample pairs
+        
+        df = self.analyze_sample_pairs()
+        
+        df['Difference (Trans - TFIDF)'] = df['Transformer Similarity'] - df['TF-IDF Similarity']
+        
+        df = df.sort_values(['Semantic Relationship', 'Transformer Similarity'], ascending=[True, False])
+        
+        return df
 
     
