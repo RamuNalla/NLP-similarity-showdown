@@ -157,4 +157,99 @@ class SimilarityAnalyzer:
         
         return df
 
+
+    def visualize_method_comparison(self, df: pd.DataFrame):            # create visualizations
+        
+        plt.style.use('default')
+        fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+        
+        axes[0, 0].scatter(df['TF-IDF Similarity'], df['Transformer Similarity'],   # TF-IDF vs Transformer similarity
+                          c=['red' if rel == 'Synonymous' else 'blue' if rel == 'Related' else 'gray' 
+                             for rel in df['Semantic Relationship']], alpha=0.7, s=100)
+        axes[0, 0].plot([0, 1], [0, 1], 'k--', alpha=0.5)  # diagonal line
+        axes[0, 0].set_xlabel('TF-IDF Similarity')
+        axes[0, 0].set_ylabel('Transformer Similarity')
+        axes[0, 0].set_title('TF-IDF vs Transformer Similarity')
+        axes[0, 0].grid(True, alpha=0.3)
+        
+        avg_similarities = df.groupby('Semantic Relationship')[['TF-IDF Similarity', 'Transformer Similarity']].mean()      #  Bar plot - Average similarity by relationship type
+        x = np.arange(len(avg_similarities.index))
+        width = 0.35
+        
+        axes[0, 1].bar(x - width/2, avg_similarities['TF-IDF Similarity'], width, 
+                      label='TF-IDF', alpha=0.8, color='skyblue')
+        axes[0, 1].bar(x + width/2, avg_similarities['Transformer Similarity'], width,
+                      label='Transformer', alpha=0.8, color='lightcoral')
+        
+        axes[0, 1].set_xlabel('Semantic Relationship')
+        axes[0, 1].set_ylabel('Average Similarity Score')
+        axes[0, 1].set_title('Average Similarity by Relationship Type')
+        axes[0, 1].set_xticks(x)
+        axes[0, 1].set_xticklabels(avg_similarities.index)
+        axes[0, 1].legend()
+        axes[0, 1].grid(True, alpha=0.3)
+        
+        methods_data = [df['TF-IDF Similarity'], df['Transformer Similarity']]      # Box plot - Distribution of similarities
+        axes[1, 0].boxplot(methods_data, labels=['TF-IDF', 'Transformer'])
+        axes[1, 0].set_ylabel('Similarity Score')
+        axes[1, 0].set_title('Distribution of Similarity Scores')
+        axes[1, 0].grid(True, alpha=0.3)
+        
+        axes[1, 1].hist(df['Difference (Trans - TFIDF)'], bins=10, alpha=0.7, color='green', edgecolor='black')  # Difference histogram
+        axes[1, 1].axvline(x=0, color='red', linestyle='--', alpha=0.7)
+        axes[1, 1].set_xlabel('Difference (Transformer - TF-IDF)')
+        axes[1, 1].set_ylabel('Frequency')
+        axes[1, 1].set_title('Transformer vs TF-IDF Performance Difference')
+        axes[1, 1].grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.savefig('method_comparison_analysis.png', dpi=300, bbox_inches='tight')
+        plt.show() 
+
+def main():         # main function to run the complete similarity analysis
+        
+    print("Starting NLP Similarity Showdown!")
+    print("-"*50)
     
+    analyzer = SimilarityAnalyzer()     # Initialize analyzer
+    
+    print("\nAnalyzing similarity matrices...")
+    tfidf_matrix, transformer_matrix = analyzer.create_similarity_heatmaps()            # Create and display heatmaps
+    
+    print("\nPerforming detailed method comparison...")
+    comparison_df = analyzer.compare_methods_detailed()             # detailed method comparison
+
+    print("\nDetailed Similarity Comparison Results:")              # display results
+    print(comparison_df.to_string(index=False))
+    
+    comparison_df.to_csv('similarity_comparison_results.csv', index=False)      # save results to CSV
+    
+    print("\nCreating visualization comparisons...")
+    analyzer.visualize_method_comparison(comparison_df)             # create comparison visualizations
+    
+    print("\nExample: Two similar sentences comparison:")
+    example_similarities = analyzer.calculate_pairwise_similarity(
+        "The cat is sleeping on the sofa",
+        "A feline is resting on the couch"
+    )
+    
+    for method, score in example_similarities.items():
+        print(f"{method}: {score:.4f}")
+    
+    print("\nExample: Two different sentences comparison:")
+    different_similarities = analyzer.calculate_pairwise_similarity(
+        "I love eating pizza for dinner",
+        "The car broke down on the highway"
+    )
+    
+    for method, score in different_similarities.items():
+        print(f"{method}: {score:.4f}")
+    
+    print("\nAnalysis complete! Check the generated files:")
+    print("- similarity_matrices_comparison.png")
+    print("- method_comparison_analysis.png") 
+    print("- similarity_comparison_results.csv")
+
+
+if __name__ == "__main__":
+    main()
