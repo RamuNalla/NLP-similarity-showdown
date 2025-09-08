@@ -250,6 +250,5 @@ def main():         # main function to run the complete similarity analysis
     print("- method_comparison_analysis.png") 
     print("- similarity_comparison_results.csv")
 
-
 if __name__ == "__main__":
     main()
