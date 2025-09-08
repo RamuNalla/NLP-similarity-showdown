@@ -99,3 +99,20 @@ def batch_analysis_demo():                          # Batch analysis demo functi
     print(df.head(3).to_string(index=False))
     
     return df
+
+
+if __name__ == "__main__":
+    print("Choose demo mode:")
+    print("1. Interactive mode (compare your own sentences)")
+    print("2. Batch analysis demo")
+    print("3. Both")
+    
+    choice = input("\nEnter choice (1/2/3): ").strip()
+    
+    if choice in ['1', '3']:
+        interactive_similarity_demo()
+    
+    if choice in ['2', '3']:
+        batch_analysis_demo()
+    
+    print("\nThanks for using the NLP Similarity Demo!")
