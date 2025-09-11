@@ -149,3 +149,123 @@ class NLPMethodBenchmark:               # a detailed benchmarking of different N
             'tfidf_times': tfidf_times,
             'transformer_times': transformer_times
         }
+
+
+
+    def create_benchmark_visualizations(self, speed_results: Dict[str, float], 
+                                      accuracy_df: pd.DataFrame, 
+                                      scalability_results: Dict[str, List[float]]):     # Create comprehensive benchmark visualizations
+        
+        fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+        
+        methods = list(speed_results.keys())                # Speed comparison
+        times = list(speed_results.values())
+        
+        bars = axes[0, 0].bar(methods, times, color=['skyblue', 'lightcoral'], alpha=0.8)
+        axes[0, 0].set_ylabel('Average Time (seconds)')
+        axes[0, 0].set_title('Speed Comparison')
+        axes[0, 0].grid(True, alpha=0.3)
+        
+        for bar, time_val in zip(bars, times):          # Add value labels
+            height = bar.get_height()
+            axes[0, 0].text(bar.get_x() + bar.get_width()/2., height,
+                           f'{time_val:.4f}s', ha='center', va='bottom')
+        
+        mae_scores = [accuracy_df['TF-IDF Error'].mean(), accuracy_df['Transformer Error'].mean()]          # Accuracy comparison
+        bars = axes[0, 1].bar(methods, mae_scores, color=['skyblue', 'lightcoral'], alpha=0.8)
+        axes[0, 1].set_ylabel('Mean Absolute Error')
+        axes[0, 1].set_title('Accuracy Comparison (Lower is Better)')
+        axes[0, 1].grid(True, alpha=0.3)
+        
+        for bar, mae in zip(bars, mae_scores):          # Add value labels
+            height = bar.get_height()
+            axes[0, 1].text(bar.get_x() + bar.get_width()/2., height,
+                           f'{mae:.4f}', ha='center', va='bottom')
+        
+        sizes = scalability_results['dataset_sizes']        # Scalability comparison
+        axes[1, 0].plot(sizes, scalability_results['tfidf_times'], 'o-', 
+                       label='TF-IDF', color='skyblue', linewidth=2, markersize=8)
+        axes[1, 0].plot(sizes, scalability_results['transformer_times'], 's-', 
+                       label='Transformer', color='lightcoral', linewidth=2, markersize=8)
+        axes[1, 0].set_xlabel('Dataset Size')
+        axes[1, 0].set_ylabel('Processing Time (seconds)')
+        axes[1, 0].set_title('Scalability Analysis')
+        axes[1, 0].legend()
+        axes[1, 0].grid(True, alpha=0.3)
+        
+        axes[1, 1].boxplot([accuracy_df['TF-IDF Error'], accuracy_df['Transformer Error']],     # Error distribution
+                          labels=['TF-IDF', 'Transformer'])
+        axes[1, 1].set_ylabel('Absolute Error')
+        axes[1, 1].set_title('Error Distribution')
+        axes[1, 1].grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.savefig('benchmark_results.png', dpi=300, bbox_inches='tight')
+        plt.show()
+
+
+    def generate_benchmark_report(self, speed_results: Dict[str, float], 
+                                accuracy_df: pd.DataFrame) -> str:          # generate benchmark report
+        
+        report = f"""
+# NLP Methods Benchmark Report
+
+## Speed Performance
+- TF-IDF: {speed_results['TF-IDF']:.4f} seconds
+- Transformer: {speed_results['Transformer']:.4f} seconds
+- Speed Ratio: {speed_results['Transformer']/speed_results['TF-IDF']:.2f}x slower for Transformers
+
+## Accuracy Performance (Mean Absolute Error)
+- TF-IDF MAE: {accuracy_df['TF-IDF Error'].mean():.4f}
+- Transformer MAE: {accuracy_df['Transformer Error'].mean():.4f}
+- Accuracy Improvement: {((accuracy_df['TF-IDF Error'].mean() - accuracy_df['Transformer Error'].mean())/accuracy_df['TF-IDF Error'].mean()*100):.1f}%
+
+## Key Findings
+- Transformers are more accurate but slower than TF-IDF
+- Transformers better capture semantic similarity
+- TF-IDF is suitable for large-scale, real-time applications
+- Transformers excel in tasks requiring deep semantic understanding
+
+## Recommendations
+- Use TF-IDF for: Large datasets, real-time systems, keyword-based similarity
+- Use Transformers for: Semantic search, content recommendation, high-accuracy requirements
+        """
+        
+        return report
+    
+
+def main():         # Run benchmarking suite complete
+    
+    print(" Starting NLP Methods Benchmark Suite!")
+    print("-"*50)
+    
+    benchmark = NLPMethodBenchmark()
+    
+    speed_results = benchmark.benchmark_speed(benchmark.sentences[:10])     # Speed benchmark
+     
+    accuracy_df = benchmark.calculate_accuracy_metrics()                    # Accuracy benchmark 
+    
+    print("\n Running scalability test...")                                 # Scalability test
+    scalability_results = benchmark.scalability_test()
+    
+    print("\n Creating benchmark visualizations...")                        # Create visualizations
+    benchmark.create_benchmark_visualizations(speed_results, accuracy_df, scalability_results)
+    
+    report = benchmark.generate_benchmark_report(speed_results, accuracy_df)    # Generate report
+    
+    with open('benchmark_report.md', 'w') as f:                                  # Save report
+        f.write(report)
+    
+    accuracy_df.to_csv('accuracy_analysis.csv', index=False)                    # Save detailed results
+    
+    print("\n Benchmark Summary:")                                            # Print summary
+    print(report)
+    
+    print("\n Benchmark complete! Generated files:")
+    print("- benchmark_results.png")
+    print("- benchmark_report.md")
+    print("- accuracy_analysis.csv")
+
+
+if __name__ == "__main__":
+    main()
