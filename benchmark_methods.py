@@ -104,3 +104,48 @@ class NLPMethodBenchmark:               # a detailed benchmarking of different N
         print(f"Transformer RMSE: {transformer_rmse:.4f}")
         
         return df
+
+    
+    def scalability_test(self) -> Dict[str, List[float]]:           # test how methods scale with increasing dataset size
+        
+        print("\n Scalability Test")
+        print("-" * 20)
+        
+        base_sentences = [
+            "The quick brown fox jumps over the lazy dog",
+            "Machine learning algorithms process large datasets",
+            "Beautiful flowers bloom in the spring garden",
+            "Technology advances rapidly in modern times",
+            "Ocean waves crash against the rocky shore"
+        ]
+        
+        dataset_sizes = [10, 25, 50, 100, 200]
+        tfidf_times = []
+        transformer_times = []
+        
+        for size in dataset_sizes:
+            test_sentences = []
+            for i in range(size):                       # create dataset by repeating and slightly modifying sentences
+                base_idx = i % len(base_sentences)
+                sentence = base_sentences[base_idx] + f" (variant {i})"
+                test_sentences.append(sentence)
+            
+            print(f"Testing with {size} sentences...")
+            
+            start_time = time.time()                    # Time TF-IDF
+            tfidf_matrix = self.tfidf_vectorizer.fit_transform(test_sentences)
+            cosine_similarity(tfidf_matrix)
+            tfidf_time = time.time() - start_time
+            tfidf_times.append(tfidf_time)
+            
+            start_time = time.time()                # Time Transformer
+            embeddings = self.sentence_model.encode(test_sentences)
+            cosine_similarity(embeddings)
+            transformer_time = time.time() - start_time
+            transformer_times.append(transformer_time)
+        
+        return {
+            'dataset_sizes': dataset_sizes,
+            'tfidf_times': tfidf_times,
+            'transformer_times': transformer_times
+        }
