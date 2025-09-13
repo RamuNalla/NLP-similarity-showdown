@@ -134,3 +134,23 @@ def export_embeddings_for_analysis(sentences: List[str],
     print("- sentences.txt")
     
     return tfidf_embeddings, transformer_embeddings
+
+
+def create_feature_importance_analysis(tfidf_vectorizer, sample_sentence: str):   # analyze which features are important for TF-IDF       
+    
+    feature_names = tfidf_vectorizer.get_feature_names_out()            # Get feature names and vector for sample sentence
+    vector = tfidf_vectorizer.transform([sample_sentence]).toarray()[0]
+    
+
+    top_indices = np.argsort(vector)[-10:][::-1]                        # Top 10 features
+    
+    print(f"\n🔍 TF-IDF Feature Analysis for: '{sample_sentence}'")
+    print("-" * 60)
+    print(f"{'Feature':<20} {'TF-IDF Score':<15}")
+    print("-" * 35)
+    
+    for idx in top_indices:
+        if vector[idx] > 0:
+            print(f"{feature_names[idx]:<20} {vector[idx]:<15.4f}")
+
+    
