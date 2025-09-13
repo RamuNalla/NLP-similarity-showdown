@@ -88,4 +88,27 @@ def plot_similarity_distribution(similarities_dict: Dict[str, List[float]],     
     plt.savefig('similarity_distributions_detailed.png', dpi=300, bbox_inches='tight')
     plt.show()
 
+
+
+def print_method_comparison_summary(tfidf_scores: List[float], 
+                                  transformer_scores: List[float],
+                                  sentence_pairs: List[Tuple[str, str]]):       # print comparison summary between two methods
     
+    print("\n Method Comparison Summary")
+    print("="*50)
+    
+    correlations = calculate_correlation(tfidf_scores, transformer_scores)      # calculate correlations
+    
+    print(f"Pearson Correlation: {correlations['pearson_correlation']:.4f}")
+    print(f"Spearman Correlation: {correlations['spearman_correlation']:.4f}")
+    print(f"Mean Absolute Difference: {correlations['mae']:.4f}")
+    
+    differences = np.array(transformer_scores) - np.array(tfidf_scores)         # find the differences
+    max_diff_idx = np.argmax(np.abs(differences))
+    
+    print(f"\nBiggest Difference (Index {max_diff_idx}):")
+    print(f"Sentences: '{sentence_pairs[max_diff_idx][0]}'")
+    print(f"          '{sentence_pairs[max_diff_idx][1]}'") 
+    print(f"TF-IDF: {tfidf_scores[max_diff_idx]:.4f}")
+    print(f"Transformer: {transformer_scores[max_diff_idx]:.4f}")
+    print(f"Difference: {differences[max_diff_idx]:.4f}")
