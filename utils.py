@@ -144,7 +144,7 @@ def create_feature_importance_analysis(tfidf_vectorizer, sample_sentence: str): 
 
     top_indices = np.argsort(vector)[-10:][::-1]                        # Top 10 features
     
-    print(f"\n🔍 TF-IDF Feature Analysis for: '{sample_sentence}'")
+    print(f"\n TF-IDF Feature Analysis for: '{sample_sentence}'")
     print("-" * 60)
     print(f"{'Feature':<20} {'TF-IDF Score':<15}")
     print("-" * 35)
