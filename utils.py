@@ -112,3 +112,25 @@ def print_method_comparison_summary(tfidf_scores: List[float],
     print(f"TF-IDF: {tfidf_scores[max_diff_idx]:.4f}")
     print(f"Transformer: {transformer_scores[max_diff_idx]:.4f}")
     print(f"Difference: {differences[max_diff_idx]:.4f}")
+
+
+def export_embeddings_for_analysis(sentences: List[str], 
+                                 tfidf_vectorizer, 
+                                 sentence_model) -> Tuple[np.ndarray, np.ndarray]:      # export embeddings for external analysis
+    
+    tfidf_embeddings = tfidf_vectorizer.fit_transform(sentences).toarray()      # Get embeddings
+    transformer_embeddings = sentence_model.encode(sentences)
+    
+    np.save('tfidf_embeddings.npy', tfidf_embeddings)                   # Save to files
+    np.save('transformer_embeddings.npy', transformer_embeddings)
+    
+    with open('sentences.txt', 'w', encoding='utf-8') as f:             # Save sentences
+        for sentence in sentences:
+            f.write(sentence + '\n')
+    
+    print(" Embeddings exported:")
+    print("- tfidf_embeddings.npy")
+    print("- transformer_embeddings.npy") 
+    print("- sentences.txt")
+    
+    return tfidf_embeddings, transformer_embeddings
