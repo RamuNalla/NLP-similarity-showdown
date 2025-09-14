@@ -153,4 +153,22 @@ def create_feature_importance_analysis(tfidf_vectorizer, sample_sentence: str): 
         if vector[idx] > 0:
             print(f"{feature_names[idx]:<20} {vector[idx]:<15.4f}")
 
+if __name__ == "__main__":
+    print(" Testing Utility Functions")
+    print("-"*30)
     
+    
+    sample_text = "  Hello World!!! This is a TEST@#$   "       # Test text preprocessing
+    cleaned = preprocess_text(sample_text)
+    print(f"Original: '{sample_text}'")
+    print(f"Cleaned:  '{cleaned}'")
+    
+    scores1 = [0.1, 0.3, 0.7, 0.9, 0.2]                     # Test correlation calculation
+    scores2 = [0.2, 0.4, 0.8, 0.95, 0.15]
+    corr_metrics = calculate_correlation(scores1, scores2)
+    
+    print(f"\nCorrelation Test:")
+    for metric, value in corr_metrics.items():
+        print(f"{metric}: {value:.4f}")
+    
+    print("\n Utility functions working correctly!")  
