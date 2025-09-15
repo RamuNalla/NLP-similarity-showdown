@@ -1,0 +1,9 @@
+Sentence 1,Sentence 2,TF-IDF Similarity,Transformer Similarity,Semantic Relationship,Difference (Trans - TFIDF)
+I love eating pizza for dinner,Pizza is my favorite meal in the evening,0.07780894359285004,0.76969355,Related,0.6918846098548733
+The weather is beautiful today,It's a gorgeous day outside,0.0,0.80550224,Synonymous,0.8055022358894348
+Machine learning is fascinating,AI and deep learning are interesting topics,0.08176804146599938,0.6461501,Synonymous,0.5643820706861002
+The dog is running in the park,A canine is jogging through the garden,0.0,0.6060548,Synonymous,0.6060547828674316
+The cat is sleeping on the sofa,A feline is resting on the couch,0.0,0.5672258,Synonymous,0.5672258138656616
+I love eating pizza for dinner,The weather is beautiful today,0.0,0.11753799,Unrelated,0.11753799021244049
+The cat is sleeping on the sofa,The dog is running in the park,0.0,0.07987409,Unrelated,0.07987409085035324
+Machine learning is fascinating,The car broke down on the highway,0.0,0.034935176,Unrelated,0.034935176372528076

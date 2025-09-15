@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from typing import List, Tuple, Dict
 import warnings
+import os
 warnings.filterwarnings('ignore')
 
 class SimilarityAnalyzer:
@@ -141,7 +142,9 @@ class SimilarityAnalyzer:
         axes[1].set_ylabel('Sentence Index')
         
         plt.tight_layout()
-        plt.savefig('similarity_matrices_comparison.png', dpi=300, bbox_inches='tight')
+        # Ensure outputs directory exists
+        os.makedirs('outputs', exist_ok=True)
+        plt.savefig(os.path.join('outputs', 'similarity_matrices_comparison.png'), dpi=300, bbox_inches='tight')
         plt.show()
         
         return tfidf_sim, transformer_sim
@@ -203,7 +206,9 @@ class SimilarityAnalyzer:
         axes[1, 1].grid(True, alpha=0.3)
         
         plt.tight_layout()
-        plt.savefig('method_comparison_analysis.png', dpi=300, bbox_inches='tight')
+        # Ensure outputs directory exists
+        os.makedirs('outputs', exist_ok=True)
+        plt.savefig(os.path.join('outputs', 'method_comparison_analysis.png'), dpi=300, bbox_inches='tight')
         plt.show() 
 
 def main():         # main function to run the complete similarity analysis
@@ -222,7 +227,9 @@ def main():         # main function to run the complete similarity analysis
     print("\nDetailed Similarity Comparison Results:")              # display results
     print(comparison_df.to_string(index=False))
     
-    comparison_df.to_csv('similarity_comparison_results.csv', index=False)      # save results to CSV
+    # Ensure outputs directory exists
+    os.makedirs('outputs', exist_ok=True)
+    comparison_df.to_csv(os.path.join('outputs', 'similarity_comparison_results.csv'), index=False)      # save results to CSV
     
     print("\nCreating visualization comparisons...")
     analyzer.visualize_method_comparison(comparison_df)             # create comparison visualizations

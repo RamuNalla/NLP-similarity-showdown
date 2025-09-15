@@ -1,0 +1,10 @@
+Sentence 1,Sentence 2,Ground Truth,TF-IDF Score,Transformer Score,TF-IDF Error,Transformer Error
+The cat sleeps on the bed,A feline rests on the mattress,0.9,0.0,0.56044424,0.9,0.33955574
+I enjoy eating pizza,Pizza is my favorite food,0.85,0.11234277891542777,0.79518265,0.7376572210845722,0.05481738
+The car is red,The automobile is crimson,0.8,0.0,0.5965326,0.8,0.20346743
+Dogs like to play,Cats enjoy sleeping,0.5,0.0,0.29935464,0.5,0.20064536
+Reading books is fun,Watching movies is entertaining,0.6,0.0,0.5418869,0.6,0.0581131
+The sun is bright,The moon glows softly,0.4,0.0,0.4724804,0.4,0.07248038
+I love programming,The weather is cold,0.1,0.0,0.026641227,0.1,0.073358774
+Mathematics is difficult,Flowers smell nice,0.0,0.0,0.024576917,0.0,0.024576917
+Computers process data,Birds fly in the sky,0.2,0.0,-0.0030664764,0.2,0.20306648

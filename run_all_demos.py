@@ -47,9 +47,6 @@ def create_results_summary():           # create a summary of all generated file
         "similarity_comparison_results.csv",
         "accuracy_analysis.csv",
         "benchmark_report.md",
-        "tfidf_embeddings.npy",
-        "transformer_embeddings.npy",
-        "sentences.txt"
     ]
     
     existing_files = []
@@ -122,10 +119,10 @@ All visualizations, data files, and analysis results have been saved for further
 Generated automatically by NLP Similarity Showdown
 """
     
-    with open('PROJECT_REPORT.md', 'w') as f:
+    os.makedirs('outputs', exist_ok=True)
+    with open(os.path.join('outputs', 'PROJECT_REPORT.md'), 'w') as f:
         f.write(report)
-    
-    print(" Project report saved: PROJECT_REPORT.md")
+    print(" Project report saved: outputs/PROJECT_REPORT.md")
 
 
 def main():                 # Main function to run all demos and analyses

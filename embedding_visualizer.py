@@ -7,6 +7,7 @@ from sentence_transformers import SentenceTransformer
 import seaborn as sns
 from typing import List, Tuple
 import warnings
+import os
 warnings.filterwarnings('ignore')
 
 class EmbeddingVisualizer:
@@ -87,7 +88,7 @@ class EmbeddingVisualizer:
         for i, (sentence, label) in enumerate(zip(self.sentences, self.labels)):
             ax.scatter(embeddings_2d[i, 0], embeddings_2d[i, 1], 
                       c=self.colors[label], s=100, alpha=0.7, 
-                      label=label if label not in [item.get_text() for item in ax.get_legend_handles_labels()[1]] else "")
+                      label=label if label not in ax.get_legend_handles_labels()[1] else "")
         
         for i, (x, y) in enumerate(embeddings_2d):
             ax.annotate(str(i), (x, y), xytext=(5, 5), textcoords='offset points',
@@ -120,7 +121,9 @@ class EmbeddingVisualizer:
         self.plot_embeddings(transformer_2d_pca, 'Transformer Embeddings (PCA)', axes[1, 1])
         
         plt.tight_layout()
-        plt.savefig('embedding_visualizations.png', dpi=300, bbox_inches='tight')
+        # Ensure outputs directory exists
+        os.makedirs('outputs', exist_ok=True)
+        plt.savefig(os.path.join('outputs', 'embedding_visualizations.png'), dpi=300, bbox_inches='tight')
         plt.show()
         
         return tfidf_emb, transformer_emb
@@ -183,7 +186,9 @@ class EmbeddingVisualizer:
         plt.grid(True, alpha=0.3)
         
         plt.tight_layout()
-        plt.savefig('similarity_distributions.png', dpi=300, bbox_inches='tight')
+        # Ensure outputs directory exists
+        os.makedirs('outputs', exist_ok=True)
+        plt.savefig(os.path.join('outputs', 'similarity_distributions.png'), dpi=300, bbox_inches='tight')
         plt.show()
 
 

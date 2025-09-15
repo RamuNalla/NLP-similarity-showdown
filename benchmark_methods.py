@@ -1,6 +1,7 @@
 import time
 import numpy as np
 import pandas as pd
+import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
@@ -200,7 +201,8 @@ class NLPMethodBenchmark:               # a detailed benchmarking of different N
         axes[1, 1].grid(True, alpha=0.3)
         
         plt.tight_layout()
-        plt.savefig('benchmark_results.png', dpi=300, bbox_inches='tight')
+        output_path = os.path.join('outputs', 'benchmark_results.png')
+        plt.savefig(output_path, dpi=300, bbox_inches='tight')
         plt.show()
 
 
@@ -236,12 +238,29 @@ class NLPMethodBenchmark:               # a detailed benchmarking of different N
 
 def main():         # Run benchmarking suite complete
     
+    output_dir = 'outputs'
+    os.makedirs(output_dir, exist_ok=True)
+    
     print(" Starting NLP Methods Benchmark Suite!")
     print("-"*50)
     
     benchmark = NLPMethodBenchmark()
     
-    speed_results = benchmark.benchmark_speed(benchmark.sentences[:10])     # Speed benchmark
+    # Define a sample list of sentences for benchmarking
+    sentences = [
+        "The quick brown fox jumps over the lazy dog",
+        "Machine learning algorithms process large datasets",
+        "Beautiful flowers bloom in the spring garden",
+        "Technology advances rapidly in modern times",
+        "Ocean waves crash against the rocky shore",
+        "The cat sleeps on the bed",
+        "I enjoy eating pizza",
+        "The car is red",
+        "Dogs like to play",
+        "Reading books is fun"
+    ]
+
+    speed_results = benchmark.benchmark_speed(sentences[:10])     # Speed benchmark
      
     accuracy_df = benchmark.calculate_accuracy_metrics()                    # Accuracy benchmark 
     
@@ -253,11 +272,12 @@ def main():         # Run benchmarking suite complete
     
     report = benchmark.generate_benchmark_report(speed_results, accuracy_df)    # Generate report
     
-    with open('benchmark_report.md', 'w') as f:                                  # Save report
+    report_path = os.path.join(output_dir, 'benchmark_report.md')
+    with open(report_path, 'w') as f:
         f.write(report)
-    
-    accuracy_df.to_csv('accuracy_analysis.csv', index=False)                    # Save detailed results
-    
+
+    accuracy_df.to_csv(os.path.join(output_dir, 'accuracy_analysis.csv'), index=False)                    # Save detailed results
+
     print("\n Benchmark Summary:")                                            # Print summary
     print(report)
     
