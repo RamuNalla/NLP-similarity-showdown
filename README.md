@@ -39,8 +39,8 @@ nlp-similarity-showdown/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/nlp-similarity-showdown.git
-cd nlp-similarity-showdown
+git clone https://github.com/RamuNalla/NLP-similarity-showdown.git
+cd NLP-similarity-showdown
 ```
 
 2. Create a virtual environment (recommended):
