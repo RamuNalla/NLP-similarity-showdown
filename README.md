@@ -10,7 +10,7 @@ This project compares two main approaches to text similarity:
 - **TF-IDF (Term Frequency-Inverse Document Frequency)**: Classical statistical method
 - **Transformers**: Modern DL approach using pre-trained sentence embeddings
 
-The analysis reveals how transformers capture semantic similarity more accurately than traditional methods, especially for sentences with similar meanings but different vocabulary.
+The analysis reveals how transformers capture semantic similarity more accurately than traditional methods, especially for sentences with similar meanings but with different vocabulary.
 
 ## Project Structure
 
