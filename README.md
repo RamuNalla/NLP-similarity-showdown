@@ -1,6 +1,6 @@
 # NLP Similarity Showdown
 
-A comparison of text similarity methods from the classical TF-IDF to modern transformer-based embeddings. 
+A comparison of text similarity methods from classical TF-IDF to modern transformer-based embeddings. 
 
 This project demonstrates how different NLP techniques capture semantic relationships and provides detailed analysis with their performance characteristics.
 
