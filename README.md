@@ -2,11 +2,11 @@
 
 A comparison of text similarity methods from the classical TF-IDF to modern transformer-based embeddings. 
 
-This project demonstrates how different NLP techniques capture semantic relationships and provides detailed analysis and their performance characteristics.
+This project demonstrates how different NLP techniques capture semantic relationships and provides detailed analysis with their performance characteristics.
 
 ## Project Overview
 
-This project compares three main approaches to text similarity:
+This project compares two main approaches to text similarity:
 - **TF-IDF (Term Frequency-Inverse Document Frequency)**: Classical statistical method
 - **Transformers**: Modern DL approach using pre-trained sentence embeddings
 
